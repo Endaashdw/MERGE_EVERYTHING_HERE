@@ -1,16 +1,14 @@
 using UnityEngine;
 
-public class MovingCamera : MonoBehaviour
+namespace Environment 
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class MovingCamera : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private float scrollSpeed;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void LateUpdate()
+        {
+            transform.Translate(scrollSpeed * Time.deltaTime * Vector2.right, Space.World);
+        }
     }
 }

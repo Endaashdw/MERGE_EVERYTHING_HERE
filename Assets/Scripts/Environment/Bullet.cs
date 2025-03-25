@@ -1,0 +1,47 @@
+﻿using System;
+using UnityEditor.UI;
+using UnityEngine;
+
+namespace Environment
+{
+    public class Bullet : MonoBehaviour
+    {
+        [SerializeField] private float speed;
+        [SerializeField] private float lifetime;
+		[SerializeField] private float damage;
+		
+        private float _age;
+        
+        private Rigidbody2D _rigidbody;
+
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody2D>();
+        }
+
+        private void Start()
+        {
+            _age = 0f;
+            _rigidbody.linearVelocity = transform.right * speed;
+        }
+
+		private void OnTriggerEnter2D(Collider2D collision) {
+			BossFights.WeakpointChoice weakpoint = collision.GetComponent<BossFights.WeakpointChoice>();
+
+			if (weakpoint != null) {
+				if (!weakpoint.invulnerable)
+					weakpoint.ChangeHealth(-damage);
+			}
+
+			Destroy(gameObject);
+		}
+
+		private void Update()
+        {
+            _age += Time.deltaTime;
+            
+            if (_age >= lifetime)
+                Destroy(gameObject);
+        }
+    }
+}
